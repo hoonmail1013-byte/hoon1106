@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YUSINSA - OUTER</title>
+<link href="https://fonts.googleapis.com/css2?family=Stylish&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --green:#2e7d32;
+    --light-green:#dcedc8;
+    --orange:#ffa000;
+    --red:#d32f2f;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:"Noto Sans KR",sans-serif;background:#fafafa;color:#222;}
+header{
+    height:64px;
+    border-bottom:10px solid #e6e6e6;
+    background:var(--green);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:200;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    justify-content:space-between;
+}
+.left-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.left-area h1{
+    margin:0;
+    font-family:'Stylish',sans-serif;
+    font-size:22px;
+    cursor:pointer;
+}
+.home-btn{
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    padding:6px 10px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+}
+.home-btn:hover{background:rgba(255,255,255,0.28);}
+nav{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:0;
+    height:100%;
+    display:flex;
+    align-items:center;
+}
+nav ul{
+    display:flex;
+    gap:100px;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+nav a{color:#fff;text-decoration:none;font-weight:700;font-size:15px}
+nav a:hover{color:var(--light-green)}
+.right-space{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.header-btn{
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    padding:6px 10px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+    transition:background 0.2s;
+}
+.header-btn:hover{
+    background:rgba(255,255,255,0.28);
+}
+.header-icon{
+    color:#fff;
+    font-size:20px;
+    text-decoration:none;
+    padding:4px;
+    transition:color 0.2s;
+}
+.header-icon:hover{
+    color:var(--light-green);
+}
+
+/* === [수정됨] 로그인 UI 스타일 추가 === */
+.user-welcome { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: #fff; }
+.user-welcome span { color: var(--light-green); }
+.user-welcome a { text-decoration: none; font-weight: 600; padding: 6px 10px; border-radius: 6px; border: 1px solid #ffcdd2; color: #ffcdd2; transition: all 0.3s; cursor: pointer; font-size: 14px; }
+.user-welcome a:hover { background-color: #d32f2f; color: #fff; border-color: #d32f2f;}
+
+
+main{
+    padding: 0px 5% 80px;
+}
+.carousel-wrapper{
+    border: 10px solid #dcedc8;
+    border-radius:12px;
+    padding:40px 12px 12px 12px;
+    margin:60px 0 40px 0;
+    position:relative;
+}
+.carousel-wrapper .carousel-title{
+    position:absolute;
+    top:-25px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#fafafa;
+    color:var(--green);
+    font-weight:900;
+    font-size:28px;
+    padding:10 16px;
+    z-index:10;
+}
+.carousel-container{ width:100%; overflow:hidden; }
+.carousel-track{
+    width: 200%;
+    display:flex;
+    transition:transform 0.8s ease-in-out;
+}
+.carousel-item{
+    width: 16.6666%;
+    padding:10px;
+    box-sizing:border-box;
+    text-align:center;
+    cursor:pointer;
+}
+.carousel-item img{
+    width:100%;
+    border-radius:10px;
+    display:block;
+    height:360px;
+    object-fit:cover;
+    background:#f2f2f2;
+}
+.carousel-item h3{margin:10px 0 6px;font-size:16px;}
+.carousel-item p{margin:0;color:#666;}
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+    margin-top:40px;
+}
+.product-card{
+    background:#fff;
+    border-radius:10px;
+    padding:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    transition:transform 0.18s;
+    cursor:pointer;
+}
+.product-card:hover{transform:translateY(-6px);}
+.product-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:8px;
+    background:#f5f5f5;
+}
+.product-info{padding:10px 4px;text-align:center;}
+.product-info h3{margin:6px 0;font-size:16px;}
+.product-info p{margin:2px 0;}
+.discount-rate{color:var(--red); font-weight:700;}
+.discounted-price{font-weight:bold; color:#222;}
+.review-stars{color:#ffc107; font-size:14px; margin-top:8px;}
+.review-stars span{margin-right:2px;}
+@media (max-width:1200px){.product-grid{grid-template-columns:repeat(4,1fr);}}
+@media (max-width:900px){.product-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:700px){.product-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:500px){.product-grid{grid-template-columns:repeat(1,1fr);}}
+/* === [수정] 로그인 UI 스타일 (로그아웃 버튼) === */
+    .user-welcome { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: #fff; }
+    .user-welcome span { color: var(--light-green); }
+    .user-welcome a { /* 로그아웃 버튼 */
+      text-decoration: none;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 6px;
+      
+      background-color: #d32f2f; /* [수정] 깔끔한 빨간색 배경 */
+      color: #fff; /* [수정] 흰색 글씨 */
+      border: 1px solid #d32f2f; /* [수정] 빨간색 테두리 */
+
+      transition: all 0.3s; 
+      cursor: pointer; 
+      font-size: 14px; 
+    }
+    .user-welcome a:hover { 
+      background-color: #b71c1c; /* [수정] 마우스 올리면 더 진한 빨간색 */
+      border-color: #b71c1c;
+      color: #fff;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="left-area" onclick="location.href='홈페이지.html'">
+        <h1>YUSINSA</h1>
+        <a class="home-btn" href="홈페이지.html">홈으로</a>
+    </div>
+    <nav aria-label="category-nav">
+        <ul>
+            <li><a href="outer.html">Outer</a></li>
+            <li><a href="jun.html">상의</a></li>
+            <li><a href="hee.html">하의</a></li>
+            <li><a href="hyuk.html">악세</a></li>
+        </ul>
+    </nav>
+    <div class="right-space">
+        <div id="loggedOutButtons" style="display: flex; gap: 12px;">
+            <a href="홈페이지.html" class="header-btn">회원가입</a> <a href="홈페이지.html" class="header-btn">로그인</a> </div>
+        <div class="user-welcome" id="loggedInWelcome" style="display: none;">
+            <span id="userNameDisplay"></span>
+            <a id="logoutBtn">로그아웃</a>
+        </div>
+        
+        <a href="cart.html" class="header-icon">🛒</a> <a href="#" class="header-icon">🔍</a>
+    </div>
+</header>
+
+<main>
+    <section class="carousel-wrapper">
+        <div class="carousel-title">추천</div>
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+</main>
+
+<script>
+// === [수정됨] 로그인 UI 설정 스크립트 추가 ===
+document.addEventListener('DOMContentLoaded', () => {
+    const loggedOutButtons = document.getElementById('loggedOutButtons');
+    const loggedInWelcome = document.getElementById('loggedInWelcome');
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const storedName = localStorage.getItem('userName');
+
+    if (isLoggedIn === 'true' && storedName) {
+        // 로그인 상태 UI
+        loggedOutButtons.style.display = 'none';
+        loggedInWelcome.style.display = 'flex';
+        userNameDisplay.textContent = `${storedName}님`;
+    } else {
+        // 로그아웃 상태 UI
+        loggedOutButtons.style.display = 'flex';
+        loggedInWelcome.style.display = 'none';
+    }
+
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail'); // 혹시 모르니 추가
+            localStorage.removeItem('userPassword'); // 혹시 모르니 추가
+            
+            alert('로그아웃되었습니다.');
+            // (선택) 이 페이지를 새로고침하거나 홈으로 보냅니다.
+            window.location.reload(); // 페이지 새로고침
+        });
+    }
+
+    // 로그아웃 상태 버튼에 홈페이지 링크 연결 (모달이 없으므로)
+    document.querySelectorAll('#loggedOutButtons a').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); // 기본 동작 중지
+            alert('로그인/회원가입을 위해 홈페이지로 이동합니다.');
+            window.location.href = '홈페이지.html';
+        });
+    });
+});
+
+
+// (기존) 캐러셀 JS
+(function(){
+    const track = document.getElementById('carouselTrack');
+
+    const carouselProducts = [
+        {id: 201, link: '상단1.html', img:'https://shop-phinf.pstatic.net/20220202_15/1643812305113IEFWM_JPEG/KakaoTalk_20220202_214504666_18.jpg', name:'트렌치코트', originalPrice: 159000, discount: 18, stars: 5, reviewCount: 1024, mileageRate: 8, subtitle: '클래식한 무드의 오버핏 트렌치코트', details: {intro: '클래식한 디자인을 현대적인 오버핏으로 재해석한 트렌치코트입니다. 탄탄한 면 혼방 소재로 제작되어 흐트러짐 없는 실루엣을 자랑합니다.', checkpoints: ['고급스러운 광택감의 고밀도 면 원단', '견고한 소뿔 단추와 벨트 버클', '내부 체크 패턴 안감으로 포인트'], care: '- 첫 세탁은 드라이클리닝 필수\n- 구김 발생 시 스팀 다리미 사용\n- 벨트는 분리하여 별도 보관'}},
+        {id: 202, link: '상단2.html', img:'https://item.elandrs.com/r/image/item/2023-11-02/ed567539-2bb2-4ae8-bd6b-e9b8702fdc6d.jpg?w=750&h=&q=100', name:'데님 자켓', originalPrice: 89000, discount: 10, stars: 4, reviewCount: 876, mileageRate: 5, subtitle: '어디에나 잘 어울리는 베이식 데님', details: {intro: '활용도 높은 스탠다드 핏의 데님 자켓입니다. 유행을 타지 않는 디자인으로 매년 간절기마다 꺼내 입기 좋은 아이템입니다.', checkpoints: ['오리지널 데님 감성의 탄탄한 면 100% 원단', '빈티지한 무드의 캔톤 버튼', '체형에 구애받지 않는 스탠다드 핏'], care: '- 데님 특성상 물빠짐이 있을 수 있으니 단독 세탁\n- 중성세제를 사용하여 찬물 세탁\n- 통풍이 잘 되는 그늘에서 건조'}},
+        {id: 203, link: '상단3.html', img:'https://item.elandrs.com/r/image/item/2024-02-13/1055d526-03b3-48a2-bf3c-89c441370a49.jpg?w=750&h=&q=100', name:'후드 집업', originalPrice: 59000, discount: 5, stars: 5, reviewCount: 2345, mileageRate: 6, subtitle: '휘뚜루마뚜루 데일리 후드 집업', details: {intro: '편안하게 매일 입기 좋은 베이식 후드 집업입니다. 부드러운 면 혼방 소재와 여유로운 핏으로 최상의 착용감을 선사합니다.', checkpoints: ['부드러운 면 혼방 쭈리 원단', 'YKK 정품 지퍼를 사용하여 부드러운 사용감', '안정감 있는 소매와 밑단 시보리 처리'], care: '- 찬물 단독 세탁 권장\n- 건조기 사용 시 수축이 발생할 수 있습니다\n- 세탁망 사용 권장'}},
+        {id: 204, link: '상단4.html', img:'https://img.ssfshop.com/cmd/LB_750x/src/https://img.ssfshop.com/goods/8SBR/24/10/21/GM0024102179599_0_THNAIL_ORGINL_20241031184501613.jpg', name:'패딩 점퍼', originalPrice: 149000, discount: 25, stars: 5, reviewCount: 988, mileageRate: 9, subtitle: '가볍고 따뜻한 웰론 충전재', details: {intro: '동물 털을 대체하는 친환경 충전재 웰론을 사용하여 가벼우면서도 뛰어난 보온성을 자랑하는 패딩 점퍼입니다.', checkpoints: ['뛰어난 보온성의 웰론(Wellon) 충전재', '외부 바람을 막아주는 넥라인과 소매 밴딩', '생활 방수가 가능한 기능성 겉감'], care: '- 중성세제로 미지근한 물에 가볍게 손세탁\n- 통풍이 잘 되는 그늘에서 완전히 건조\n- 충전재가 뭉쳤을 경우 가볍게 두드려 펴주세요'}},
+        {id: 205, link: '상단5.html', img:'https://image2.lotteimall.com/goods/14/63/97/2570976314_1.jpg/dims/resizemc/550x550/optimize', name:'블레이저', originalPrice: 109000, discount: 15, stars: 4, reviewCount: 752, mileageRate: 7, subtitle: '미니멀 룩의 정석, 투버튼 블레이저', details: {intro: '미니멀한 디자인과 깔끔한 핏으로 어떤 자리에서나 잘 어울리는 투버튼 블레이저입니다. 하나쯤 소장하면 오래도록 입을 수 있는 기본 아이템입니다.', checkpoints: ['구김이 적고 복원력이 우수한 TR 원단', '가장 기본적인 노치드 라펠과 투버튼 디자인', '실용성을 더한 내부 포켓'], care: '- 첫 세탁은 드라이클리닝 필수\n- 스팀 다리미 사용 권장\n- 장기간 보관 시 옷걸이에 걸어 보관'}},
+        {id: 206, link: '상단6.html', img:'https://maninstore.co.kr/web/product/tiny/202412/a2e1367a9bf383ba80087c662928160e.jpg', name:'숏패딩', originalPrice: 99000, discount: 10, stars: 5, reviewCount: 1590, mileageRate: 8, subtitle: '트렌디한 하이넥 크롭 숏패딩', details: {intro: '트렌디한 크롭 기장과 목을 감싸는 하이넥 디자인으로 보온성과 스타일을 모두 잡은 숏패딩입니다. 가벼운 무게감으로 활동성이 좋습니다.', checkpoints: ['목을 따뜻하게 감싸주는 하이넥 디자인', '볼륨감 있는 웰론 충전재', '밑단 스트링으로 다양한 실루엣 연출 가능'], care: '- 중성세제로 미지근한 물에 가볍게 손세탁\n- 통풍이 잘 되는 그늘에서 완전히 건조\n- 충전재가 뭉쳤을 경우 가볍게 두드려 펴주세요'}}
+    ];
+
+    let carouselHTML = '';
+    carouselProducts.forEach(p => {
+        const discountedPrice = p.originalPrice - Math.floor(p.originalPrice * p.discount / 100);
+        carouselHTML += `
+            <div class="carousel-item">
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>₩${discountedPrice.toLocaleString()}</p>
+            </div>
+        `;
+    });
+    track.innerHTML = carouselHTML;
+    
+    Array.from(track.children).forEach((item, index) => {
+        item.addEventListener('click', () => {
+            const product = carouselProducts[index];
+            const discountedPrice = product.originalPrice - Math.floor(product.originalPrice * product.discount / 100);
+            const productData = { ...product, discountedPrice: discountedPrice };
+            localStorage.setItem('selectedProduct', JSON.stringify(productData));
+            window.location.href = product.link;
+        });
+    });
+
+    let currentPage = 0;
+    const totalPages = 2;
+    function slidePage() {
+        currentPage = (currentPage + 1) % totalPages;
+        const offset = currentPage * -50;
+        track.style.transform = `translateX(${offset}%)`;
+    }
+    setInterval(slidePage, 3000);
+})();
+
+// (기존) 상품 그리드 JS
+(function(){
+    const productGrid = document.getElementById('productGrid');
+    const products = [
+        {id: 1, link: '101.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20240725/4272899/4272899_17562690260082_big.jpg?w=1200', name:'오버핏 후드집업', originalPrice: 89000, discount: 15, stars: 5, reviewCount: 873, mileageRate: 8, subtitle: '부드러운 기모 안감의 데일리 후드', details: {intro: '견고한 쭈리 원단에 기모 안감을 더해 보온성을 높인 오버핏 후드집업입니다. 어떤 체형에도 잘 어울리는 여유로운 핏으로 데일리 아이템으로 강력 추천합니다.', checkpoints: ['포근한 기모 안감으로 뛰어난 보온성', '세탁 후에도 변형이 적은 고밀도 쭈리 원단', '넉넉한 후드 사이즈와 튼튼한 스트링 마감'], care: '- 찬물 단독 세탁 권장\n- 건조기 사용 시 수축이 발생할 수 있습니다\n- 프린팅 부분 다림질 금지'}},
+        {id: 2, link: '102.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20240731/4285568/4285568_17261236174112_big.jpg?w=1200', name:'베이식 니트 가디건', originalPrice: 95000, discount: 10, stars: 4, reviewCount: 451, mileageRate: 5, subtitle: '활용도 높은 세미 오버핏 가디건', details: {intro: '부드러운 터치감의 니트 원사를 사용하여 착용감이 우수한 베이식 가디건입니다. 간절기 아우터는 물론, 겨울철 이너로도 활용도가 높습니다.', checkpoints: ['까슬거림 없는 부드러운 아크릴 원사', '어떤 룩에도 잘 어울리는 베이식 디자인', '고급스러운 너트 단추 사용'], care: '- 드라이클리닝 권장\n- 니트 소재 특성상 올뜯김 주의\n- 옷걸이 보관 시 늘어짐이 발생할 수 있습니다'}},
+        {id: 3, link: '103.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20250207/4768143/4768143_17392434228739_big.jpg?w=1200', name:'카모플라쥬 후드 집업', originalPrice: 129000, discount: 20, stars: 5, reviewCount: 788, mileageRate: 10, subtitle: '빈티지한 워싱감의 스트릿 무드', details: {intro: '유니크한 카모플라쥬 패턴과 워싱 디테일이 돋보이는 제품입니다. 스트릿 패션에 포인트 아이템으로 활용하기 좋습니다.', checkpoints: ['존재감 있는 카모플라쥬 패턴', '자연스러운 워싱으로 빈티지한 무드 연출', '튼튼한 YKK 2-Way 지퍼 사용'], care: '- 워싱 제품 특성상 이염에 주의\n- 뒤집어서 찬물에 단독 세탁 권장\n- 건조기 사용 금지'}},
+        {id: 4, link: '104.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20240215/3873955/3873955_17304376370649_big.jpg?w=1200', name:'윈드브레이커 자켓', originalPrice: 79000, discount: 5, stars: 4, reviewCount: 234, mileageRate: 6, subtitle: '가볍고 편안한 간절기 필수템', details: {intro: '생활 방수가 가능한 기능성 원단으로 제작되어 가벼운 야외 활동 시에도 쾌적함을 유지해줍니다. 밑단 스트링으로 다양한 실루엣 연출이 가능합니다.', checkpoints: ['가볍고 바스락거리는 질감의 나일론 원단', '생활 방수 기능으로 실용성 UP', '밑단 스트링으로 핏 조절 가능'], care: '- 중성세제를 사용하여 미지근한 물에 가볍게 세탁\n- 방수 기능 유지를 위해 섬유유연제 사용 금지\n- 그늘에서 자연 건조'}},
+        {id: 5, link: '105.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20250116/4725993/4725993_17375519534444_big.jpg?w=1200', name:'캔버스 워크 후드 집업', originalPrice: 145000, discount: 25, stars: 5, reviewCount: 912, mileageRate: 9, subtitle: '견고한 캔버스 소재의 워크웨어', details: {intro: '내구성 좋은 캔버스 원단과 빈티지한 워싱이 매력적인 워크웨어 스타일의 후드 집업입니다. 넉넉한 수납공간을 자랑합니다.', checkpoints: ['마찰에 강한 고밀도 캔버스 원단', '워크웨어 감성의 트리플 스티치 마감', '가슴과 허리 부분의 넉넉한 포켓'], care: '- 첫 세탁은 드라이클리닝 권장\n- 이염 방지를 위해 단독 세탁\n- 워싱으로 인한 개체별 색상 차이가 있을 수 있습니다'}},
+        {id: 6, link: '106.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20230323/3171886/3171886_16867252829497_big.jpg?w=1200', name:'쿨 터치 에센셜 가디건', originalPrice: 65000, discount: 10, stars: 5, reviewCount: 550, mileageRate: 7, subtitle: '시원한 감촉의 여름 가디건', details: {intro: '입는 순간 시원함이 느껴지는 쿨 터치 원사로 제작되어 여름철 실내외에서 가볍게 걸치기 좋은 필수 아이템입니다.', checkpoints: ['냉감 기능성 원사로 쾌적한 착용감', '자외선 차단 기능 포함', '구김이 적어 관리가 용이함'], care: '- 미지근한 물에 중성세제로 가볍게 손세탁\n- 비틀어 짜지 말고 수건으로 물기 제거\n- 그늘에 뉘어서 건조'}},
+        {id: 7, link: '107.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20230315/3148717/3148717_17514422654080_big.jpg?w=1200', name:'오버사이즈 블레이저', originalPrice: 159000, discount: 18, stars: 4, reviewCount: 321, mileageRate: 5, subtitle: '모던하고 시크한 실루엣', details: {intro: '어깨 라인을 잡아주는 패드와 여유 있는 오버사이즈 핏으로 트렌디한 실루엣을 연출합니다. 포멀룩과 캐주얼룩 모두에 잘 어울립니다.', checkpoints: ['흐트러짐 없는 실루엣을 위한 어깨 패드', '구김이 적고 복원력이 우수한 TR 원단', '실용적인 내부 포켓 구성'], care: '- 첫 세탁은 드라이클리닝 필수\n- 스팀 다리미 사용 권장\n- 장기간 보관 시 옷걸이에 걸어 보관'}},
+        {id: 8, link: '108.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20250207/4768176/4768176_17513521413851_big.jpg?w=1200', name:'크롭 데님 블루종 자켓', originalPrice: 110000, discount: 12, stars: 5, reviewCount: 642, mileageRate: 8, subtitle: '경쾌한 무드의 크롭 기장', details: {intro: '트렌디한 크롭 기장으로 다리가 길어 보이는 효과를 주는 데님 자켓입니다. 다양한 하의와 매치하여 경쾌한 스타일을 완성해보세요.', checkpoints: ['다리가 길어 보이는 크롭 기장', '탄탄하고 내구성 좋은 데님 원단', '밑단 밴딩 처리로 안정적인 착용감'], care: '- 데님 특성상 물빠짐이 있을 수 있으니 단독 세탁\n- 중성세제를 사용하여 찬물 세탁\n- 통풍이 잘 되는 그늘에서 건조'}},
+        {id: 9, link: '109.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20250204/4758239/4758239_17406349333813_big.jpg?w=1200', name:'스티치 데님 트러커 자켓', originalPrice: 135000, discount: 22, stars: 4, reviewCount: 489, mileageRate: 10, subtitle: '스티치 포인트로 더 특별하게', details: {intro: '배색 스티치 디테일이 더해져 밋밋하지 않고 포인트를 주는 데님 트러커 자켓입니다. 탄탄한 데님 원단으로 오래도록 입을 수 있습니다.', checkpoints: ['감각적인 배색 스티치 포인트', '오리지널 트러커 자켓의 베이식한 디자인', '견고한 캔톤 버튼 사용'], care: '- 데님 특성상 물빠짐이 있을 수 있으니 단독 세탁\n- 중성세제를 사용하여 찬물 세탁\n- 통풍이 잘 되는 그늘에서 건조'}},
+        {id: 10, link: '110.html', img:'https://image.msscdn.net/thumbnails/images/goods_img/20221121/2952757/2952757_1_big.jpg?w=1200', name:'램스킨 라이더 자켓', originalPrice: 299000, discount: 30, stars: 5, reviewCount: 985, mileageRate: 7, subtitle: '부드러운 양가죽의 프리미엄 자켓', details: {intro: '최고급 이태리 램스킨(양가죽)을 사용하여 시간이 지날수록 몸에 맞게 길들여지는 매력적인 라이더 자켓입니다. 시크한 스타일링의 완성을 경험해보세요.', checkpoints: ['부드러운 질감과 은은한 광택의 이태리 램스킨', 'YKK 정품 지퍼를 사용하여 부드러운 사용감', '몸의 라인을 잡아주는 입체적인 패턴 설계'], care: '- 가죽 전문 클리닝 업체 의뢰 필수\n- 물에 닿지 않도록 주의\n- 통풍이 잘 되는 그늘에 보관'}},
+    ];
+
+    products.forEach(p => {
+        const discountedPrice = p.originalPrice - Math.floor(p.originalPrice * p.discount / 100);
+        const starStr = '★'.repeat(p.stars);
+        
+        const card = document.createElement('div');
+        card.className='product-card';
+        
+        card.addEventListener('click', () => {
+            const productData = { ...p, discountedPrice: discountedPrice };
+            localStorage.setItem('selectedProduct', JSON.stringify(productData));
+            window.location.href = p.link;
+        });
+
+        card.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <div class="product-info">
+                <h3>${p.name}</h3>
+                <p class="discount-rate">${p.discount}% OFF</p>
+                <p class="discounted-price">₩${discountedPrice.toLocaleString()}</p>
+                <p class="review-stars">${starStr} (${p.reviewCount})</p>
+            </div>
+        `;
+        productGrid.appendChild(card);
+    });
+})();
+</script>
+
+</body>
+</html>

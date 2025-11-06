@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>장바구니 - YUSINSA</title>
+<link href="https://fonts.googleapis.com/css2?family=Stylish&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --green:#2e7d32;
+        --light-green:#dcedc8;
+        --red:#d32f2f;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:"Noto Sans KR",sans-serif;background:#fafafa;color:#222;}
+    header{
+        height:64px;
+        border-bottom:10px solid #e6e6e6;
+        background:var(--green);
+        color:#fff;
+        position:sticky;
+        top:0;
+        z-index:200;
+        display:flex;
+        align-items:center;
+        padding:0 20px;
+        justify-content:space-between;
+    }
+    .left-area{ display:flex; align-items:center; gap:10px; }
+    .left-area h1{ margin:0; font-family:'Stylish',sans-serif; font-size:22px; cursor:pointer; }
+    .home-btn{ background:rgba(255,255,255,0.15); color:#fff; padding:6px 10px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; }
+    .home-btn:hover{background:rgba(255,255,255,0.28);}
+    nav{ position:absolute; left:50%; transform:translateX(-50%); top:0; height:100%; display:flex; align-items:center; }
+    nav ul{ display:flex; gap:100px; margin:0; padding:0; list-style:none; }
+    nav a{color:#fff;text-decoration:none;font-weight:700;font-size:15px}
+    nav a:hover{color:var(--light-green)}
+    .right-space{ display:flex; align-items:center; gap:12px; }
+    .header-btn{ background:rgba(255,255,255,0.15); color:#fff; padding:6px 10px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; transition:background 0.2s; }
+    .header-btn:hover{ background:rgba(255,255,255,0.28); }
+    .header-icon{ color:#fff; font-size:20px; text-decoration:none; padding:4px; transition:color 0.2s; }
+    .header-icon:hover{ color:var(--light-green); }
+
+    /* === [수정] 로그인 UI 스타일 (로그아웃 버튼) === */
+    .user-welcome { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: #fff; }
+    .user-welcome span { color: var(--light-green); }
+    .user-welcome a {
+      text-decoration: none; font-weight: 700; padding: 6px 10px; border-radius: 6px;
+      background-color: #d32f2f; color: #fff; border: 1px solid #d32f2f;
+      transition: all 0.3s; cursor: pointer; font-size: 14px; 
+    }
+    .user-welcome a:hover { background-color: #b71c1c; border-color: #b71c1c; color: #fff; }
+
+    main{
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    h2 {
+        font-size: 24px;
+        border-bottom: 2px solid var(--green);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .cart-item img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .item-info { flex-grow: 1; }
+    .item-info h3 { margin: 0 0 10px; font-size: 18px; }
+    .item-info p { margin: 4px 0; color: #666; font-size: 14px; }
+    .item-price {
+        font-size: 18px;
+        font-weight: 700;
+        min-width: 120px;
+        text-align: right;
+    }
+    .remove-btn {
+        background: var(--red);
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 700;
+    }
+    .total-summary {
+        margin-top: 40px;
+        padding: 30px;
+        background: #fff;
+        border-radius: 10px;
+        text-align: right;
+    }
+    /* === [수정] 쿠폰/가격 표시 CSS === */
+    .total-summary div { margin-bottom: 10px; }
+    .total-summary .final-price {
+        font-size: 20px;
+        font-weight: 700;
+        border-top: 1px dashed #ccc;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+    .total-summary .final-price span {
+        color: var(--green);
+        font-size: 24px;
+        margin-left: 15px;
+    }
+    #coupon-btn {
+        background-color: var(--red);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+    }
+    #coupon-btn:hover { background-color: #b71c1c; }
+    #coupon-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+    #discount-display {
+        font-size: 16px; 
+        color: var(--red); 
+    }
+    /* ================================= */
+    #empty-cart {
+        text-align: center;
+        font-size: 18px;
+        color: #888;
+        padding: 100px 0;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="left-area" onclick="location.href='홈페이지.html'">
+        <h1>YUSINSA</h1>
+        <a class="home-btn" href="홈페이지.html">홈으로</a>
+    </div>
+    <nav aria-label="category-nav">
+        <ul>
+            <li><a href="outer.html">Outer</a></li>
+            <li><a href="jun.html">상의</a></li>
+            <li><a href="hee.html">하의</a></li>
+            <li><a href="hyuk.html">악세</a></li>
+        </ul>
+    </nav>
+    <div class="right-space">
+        <div id="loggedOutButtons" style="display: flex; gap: 12px;">
+            <a href="홈페이지.html" class="header-btn">회원가입</a>
+            <a href="홈페이지.html" class="header-btn">로그인</a>
+        </div>
+        <div class="user-welcome" id="loggedInWelcome" style="display: none;">
+            <span id="userNameDisplay"></span>
+            <a id="logoutBtn">로그아웃</a>
+        </div>
+        <a href="cart.html" class="header-icon">🛒</a>
+        <a href="#" class="header-icon">🔍</a>
+    </div>
+</header>
+
+<main>
+    <h2>장바구니</h2>
+    <div id="cart-container">
+        </div>
+    
+    <div id="total-summary" class="total-summary" style="display: none;">
+        <div id="coupon-section">
+            <button id="coupon-btn">20% 신규회원 쿠폰 적용</button>
+        </div>
+        
+        <div id="price-before-discount" style="font-size: 16px;">
+            상품 금액: ₩<span id="original-total-price"></span>
+        </div>
+        
+        <div id="discount-display" style="display:none;">
+            쿠폰 할인: - ₩<span id="discount-amount"></span>
+        </div>
+        
+        <div class="final-price">
+            총 주문 금액: <span id="total-price"></span>
+        </div>
+    </div>
+</main>
+
+<script>
+    // === [수정] 현재 총 가격을 저장할 변수 (전역) ===
+    let currentTotalPrice = 0;
+
+    // --- 유틸리티 함수 ---
+    function getCart() {
+        return JSON.parse(localStorage.getItem('cartItems')) || [];
+    }
+    function saveCart(cart) {
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+    }
+
+    // --- 페이지 로드 시 장바구니 렌더링 ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCart();
+        setupLoginUI(); // 로그인 UI 설정
+        setupCoupon(); // 쿠폰 로직 설정
+    });
+
+    function renderCart() {
+        const cart = getCart();
+        const container = document.getElementById('cart-container');
+        const summary = document.getElementById('total-summary');
+        
+        container.innerHTML = ''; // 초기화
+        currentTotalPrice = 0; // [수정] 총액 초기화
+        
+        if (cart.length === 0) {
+            container.innerHTML = '<p id="empty-cart">장바구니가 비어있습니다.</p>';
+            summary.style.display = 'none';
+            return;
+        }
+        
+        cart.forEach(item => {
+            const itemTotalPrice = item.price * item.quantity;
+            currentTotalPrice += itemTotalPrice; // [수정] 전역 변수에 누적
+            
+            const itemHTML = `
+                <div class="cart-item" data-cart-id="${item.cartId}">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p>옵션: ${item.size} / ${item.color}</p>
+                        <p>수량: ${item.quantity}개</p>
+                    </div>
+                    <div class="item-price">₩${itemTotalPrice.toLocaleString()}</div>
+                    <button class="remove-btn">삭제</button>
+                </div>
+            `;
+            container.innerHTML += itemHTML;
+        });
+
+        // === [수정] 가격 표시 업데이트 ===
+        document.getElementById('original-total-price').textContent = currentTotalPrice.toLocaleString();
+        document.getElementById('total-price').textContent = `₩${currentTotalPrice.toLocaleString()}`;
+        summary.style.display = 'block';
+
+        // --- '삭제' 버튼 이벤트 리스너 설정 ---
+        container.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const cartId = e.target.closest('.cart-item').dataset.cartId;
+                
+                let currentCart = getCart();
+                currentCart = currentCart.filter(item => String(item.cartId) !== cartId);
+                saveCart(currentCart);
+                
+                alert('상품이 삭제되었습니다.');
+                window.location.reload(); // [수정] 삭제 후 페이지 새로고침 (쿠폰/가격 재계산)
+            });
+        });
+    }
+
+    // --- [수정] 쿠폰 적용 로직 ---
+    function setupCoupon() {
+        const couponBtn = document.getElementById('coupon-btn');
+        const totalPriceSpan = document.getElementById('total-price');
+        const discountDisplay = document.getElementById('discount-display');
+        const discountAmountSpan = document.getElementById('discount-amount');
+        const priceBeforeDiscountDiv = document.getElementById('price-before-discount');
+
+        // 1. 쿠폰 상태에 따라 버튼 초기화
+        if (localStorage.getItem('couponUsed') === 'true') {
+            couponBtn.textContent = '신규회원 쿠폰 (사용됨)';
+            couponBtn.disabled = true;
+            priceBeforeDiscountDiv.style.display = 'none'; // 쿠폰 썼으면 원래 가격 숨기기
+        } else if (localStorage.getItem('isLoggedIn') !== 'true') {
+            couponBtn.textContent = '로그인 후 쿠폰 사용 가능';
+            couponBtn.disabled = true;
+        } else if (localStorage.getItem('couponAvailable') !== 'true') {
+            couponBtn.textContent = '사용 가능한 쿠폰이 없습니다';
+            couponBtn.disabled = true;
+        } else if (currentTotalPrice === 0) {
+            couponBtn.textContent = '상품을 담아주세요';
+            couponBtn.disabled = true;
+        }
+
+        // 2. 쿠폰 버튼 클릭 이벤트
+        couponBtn.addEventListener('click', () => {
+            // 이중 확인
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('로그인 후 사용 가능합니다.'); return;
+            }
+            if (localStorage.getItem('couponAvailable') !== 'true') {
+                alert('사용 가능한 쿠폰이 없습니다.'); return;
+            }
+            if (localStorage.getItem('couponUsed') === 'true') {
+                alert('이미 쿠폰을 사용했습니다.'); return;
+            }
+
+            // 3. 쿠폰 적용
+            const discount = Math.floor(currentTotalPrice * 0.2);
+            const finalPrice = currentTotalPrice - discount;
+
+            discountAmountSpan.textContent = discount.toLocaleString();
+            totalPriceSpan.textContent = `₩${finalPrice.toLocaleString()}`; // 최종 가격 업데이트
+            discountDisplay.style.display = 'block'; // 할인 금액 표시
+
+            couponBtn.textContent = '쿠폰 적용 완료';
+            couponBtn.disabled = true;
+
+            // 4. 상태 저장
+            localStorage.setItem('couponUsed', 'true'); // 쿠폰 사용됨
+            localStorage.removeItem('couponAvailable'); // 쿠폰 소진
+            
+            alert('20% 할인 쿠폰이 적용되었습니다!');
+        });
+    }
+
+
+    // --- 로그인 UI 및 로그아웃 기능 ---
+    function setupLoginUI() {
+        const loggedOutButtons = document.getElementById('loggedOutButtons');
+        const loggedInWelcome = document.getElementById('loggedInWelcome');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const storedName = localStorage.getItem('userName');
+
+        if (isLoggedIn === 'true' && storedName) {
+            // 로그인 상태 UI
+            loggedOutButtons.style.display = 'none';
+            loggedInWelcome.style.display = 'flex';
+            userNameDisplay.textContent = `${storedName}님`;
+        } else {
+            // 로그아웃 상태 UI
+            loggedOutButtons.style.display = 'flex';
+            loggedInWelcome.style.display = 'none';
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userName'); 
+                
+                alert('로그아웃되었습니다.');
+                window.location.href = '홈페이지.html'; 
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

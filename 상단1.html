@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>상품 상세 - YUSINSA</title>
+<link href="https://fonts.googleapis.com/css2?family=Stylish&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+    :root {--primary:#222; --secondary:#666; --highlight:#d32f2f; --background:#fff; --border:#e0e0e0; --green-main: #2e7d32;}
+    * {box-sizing: border-box;}
+    body {margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: var(--background); color: var(--primary);}
+    header {height: 64px; border-bottom: 10px solid #e6e6e6; background: var(--green-main); color: #fff; position: sticky; top: 0; z-index: 200; display: flex; align-items: center; padding: 0 20px; justify-content: space-between;}
+    .left-area {display: flex; align-items: center; gap: 10px;}
+    .left-area h1 {margin: 0; font-family: 'Stylish', sans-serif; font-size: 1.5em; cursor: pointer;}
+    nav {position: absolute; left: 50%; transform: translateX(-50%); top: 0; height: 100%; display: flex; align-items: center;}
+    nav ul {display: flex; gap: 100px; margin: 0; padding: 0; list-style: none;}
+    nav a {color: #fff; text-decoration: none; font-weight: 700; font-size: 15px;}
+    .right-space {display: flex; align-items: center; gap: 12px;}
+    .header-btn {background: rgba(255, 255, 255, 0.15); color: #fff; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 14px;}
+    .header-icon {color: #fff; font-size: 20px; text-decoration: none; padding: 4px;}
+
+    /* === [수정됨] 로그인 UI 스타일 (제대로 된 위치) === */
+    .user-welcome { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: #fff; }
+    .user-welcome span { color: var(--light-green); }
+    .user-welcome a { /* 로그아웃 버튼 */
+      text-decoration: none;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 6px;
+      
+      background-color: #d32f2f; /* 깔끔한 빨간색 배경 */
+      color: #fff; /* 흰색 글씨 */
+      border: 1px solid #d32f2f; /* 빨간색 테두리 */
+
+      transition: all 0.3s; 
+      cursor: pointer; 
+      font-size: 14px; 
+    }
+    .user-welcome a:hover { 
+      background-color: #b71c1c; /* 마우스 올리면 더 진한 빨간색 */
+      border-color: #b71c1c;
+      color: #fff;
+    }
+    /* ============================================== */
+
+    main {display: flex; flex-direction: column; align-items: center; padding: 80px 5%;}
+    .product-detail-container {display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; width: 100%;}
+    .product-image-area {display: flex; flex-direction: column; gap: 20px;}
+    .main-image {width: 100%;}
+    .product-info-area {display: flex; flex-direction: column;}
+    .product-info-area h2 {font-size: 2.8em; margin: 0; border-bottom: 1px solid var(--border); padding-bottom: 15px; font-weight: 500;}
+    .product-info-area .subtitle {font-size: 1.1em; color: var(--secondary); margin-top: 5px; margin-bottom: 20px;}
+    .price-group {border-top: 1px solid var(--border); padding-top: 15px;}
+    .price-group .discount-rate {color: var(--highlight); font-weight: bold; font-size: 1.2em; margin-right: 10px;}
+    .original-price {font-size: 1.2em; color: var(--secondary); text-decoration: line-through; margin-right: 10px;}
+    .price {font-size: 1.8em; font-weight: bold; color: var(--primary);}
+    .options {display: flex; flex-direction: column; gap: 15px; border-top: 1px solid var(--border); padding-top: 20px;}
+    .option-group {display: flex; align-items: center; gap: 20px; padding: 10px 0;}
+    .option-group label {font-weight: 700; min-width: 80px;}
+    .option-group select {width: 100%; max-width: 250px; padding: 10px; border: 1px solid var(--border);}
+    .quantity-selector {display: flex; align-items: center; max-width: 140px; border: 1px solid var(--border);}
+    .quantity-selector button {background: none; border: none; width: 40px; height: 40px; font-size: 1.2em; cursor: pointer; color: var(--primary);}
+    .quantity-selector input {text-align: center; border: none; flex-grow: 1; height: 40px; font-size: 1.1em; width: 50px; border-left: 1px solid var(--border); border-right: 1px solid var(--border);}
+    .total-price {margin-top: 30px; font-size: 1.6em; font-weight: bold; text-align: right; border-top: 1px solid var(--border); padding-top: 20px;}
+    .buttons {display: flex; gap: 10px; margin-top: 20px;}
+    .buttons button {flex: 1; padding: 18px; border: none; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);}
+    .buy-btn {background-color: var(--primary); color: var(--background);}
+    .cart-btn {background-color: var(--secondary); color: var(--background);}
+    .buy-btn:hover {transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); background-color: var(--green-main);}
+    .cart-btn:hover {transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); background-color: #555;}
+    .additional-info {margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border); font-size: 0.9em; color: var(--secondary); line-height: 1.8;}
+    .additional-info strong {color: var(--primary);}
+    .product-description-extended {margin-top: 60px; max-width: 1200px; width: 100%; padding: 30px 0; border-top: 1px solid var(--border);}
+    .product-description-extended h3 {font-size: 1.8em; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 30px;}
+    .product-description-extended .detail-section p {line-height: 1.8; color: var(--secondary); font-size: 1.1em; white-space: pre-wrap;}
+    .product-description-extended .detail-section strong {font-size: 1.1em; color: var(--primary); display: block; margin-top: 20px; margin-bottom: 5px;}
+    .product-description-extended .detail-section ul {list-style: none; padding-left: 1.5em; margin: 0;}
+    .product-description-extended .detail-section li {line-height: 1.8; color: var(--secondary); font-size: 1.1em;}
+    .product-description-extended .detail-section li::before {content: '✓'; color: var(--green-main); font-weight: bold; display: inline-block; width: 1.5em; margin-left: -1.5em;}
+    footer {background-color: var(--green-main); color: white; padding: 40px 20px; text-align: center; margin-top: 80px;}
+    
+    @media (max-width: 768px) {
+        .product-detail-container {grid-template-columns: 1fr;}
+        .product-info-area {margin-top: 20px;}
+        /* === [수정됨] 모바일 CSS에서는 로그인 스타일 제거 (밖으로 이동했음) === */
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="left-area" onclick="location.href='홈페이지.html'"><h1>YUSINSA</h1></div>
+        <nav>
+            <ul>
+                <li><a href="outer.html">Outer</a></li><li><a href="jun.html">상의</a></li><li><a href="hee.html">하의</a></li><li><a href="hyuk.html">악세</a></li>
+            </ul>
+        </nav>
+        <div class="right-space">
+            <div id="loggedOutButtons" style="display: flex; gap: 12px;">
+                <a href="#" class="header-btn">회원가입</a>
+                <a href="#" class="header-btn">로그인</a>
+            </div>
+            <div class="user-welcome" id="loggedInWelcome" style="display: none;">
+                <span id="userNameDisplay"></span>
+                <a id="logoutBtn">로그아웃</a>
+            </div>
+            <a href="cart.html" class="header-icon">🛒</a> <a href="#" class="header-icon">🔍</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-detail-container">
+            <div class="product-image-area"><img id="main-product-image" class="main-image" src="" alt="상품 이미지" /></div>
+            <div class="product-info-area">
+                <h2 id="product-name"></h2>
+                <p id="product-subtitle" class="subtitle"></p>
+                <div class="price-group">
+                    <span id="discount-rate" class="discount-rate"></span>
+                    <span id="original-price" class="original-price"></span>
+                    <span id="discounted-price" class="price"></span>
+                </div>
+                <div class="options">
+                    <div class="option-group">
+                        <label for="size-select">사이즈</label>
+                        <select id="size-select"><option value="">옵션 선택</option><option value="S">S</option><option value="M">M</option><option value="L">L</option></select>
+                    </div>
+                    <div class="option-group">
+                        <label for="color-select">색상</label>
+                        <select id="color-select"><option value="">옵션 선택</option><option value="black">블랙</option><option value="white">화이트</option></select>
+                    </div>
+                    <div class="option-group">
+                        <label for="quantity">수량</label>
+                        <div class="quantity-selector">
+                            <button id="minus-btn">-</button><input type="text" id="quantity-input" value="1" readonly /><button id="plus-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-price">총 상품 금액: ₩<span id="final-price"></span></div>
+                <div class="buttons">
+                    <button class="buy-btn">구매하기</button>
+                    <button class="cart-btn" id="add-to-cart-btn">장바구니 담기</button>
+                </div>
+                <div class="additional-info">
+                    <p id="mileage-info"></p>
+                    <p><strong>배송:</strong> 전국 무료배송 (제주/도서산간 지역 추가 비용 발생)</p>
+                </div>
+            </div>
+        </section>
+        <section class="product-description-extended">
+            <h3>상품 상세 정보</h3>
+            <div id="product-details-content" class="detail-section">
+            </div>
+        </section>
+    </main>
+    <footer class="footer"><p>&copy; 2025 YUSINSA. All rights reserved.</p></footer>
+
+    <script>
+    // === [수정됨] 장바구니 유틸리티 함수 추가 ===
+    function getCart() {
+        return JSON.parse(localStorage.getItem('cartItems')) || [];
+    }
+    function saveCart(cart) {
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setupLoginUI(); // 로그인 UI 설정 함수 호출
+
+        const productData = JSON.parse(localStorage.getItem('selectedProduct'));
+        if (!productData) {
+            document.querySelector('main').innerHTML = '<h1>상품 정보를 불러올 수 없습니다.</h1>';
+            return;
+        }
+
+        let basePrice = productData.discountedPrice;
+
+        // --- 1. 고정된 정보 페이지에 채우기 ---
+        document.title = `${productData.name} - YUSINSA`;
+        document.getElementById('main-product-image').src = productData.img;
+        document.getElementById('main-product-image').alt = productData.name;
+        document.getElementById('product-name').textContent = productData.name;
+        document.getElementById('product-subtitle').textContent = productData.subtitle;
+        document.getElementById('discount-rate').textContent = `${productData.discount}%`;
+        document.getElementById('original-price').textContent = `₩${productData.originalPrice.toLocaleString()}`;
+        document.getElementById('discounted-price').textContent = `₩${basePrice.toLocaleString()}`;
+        document.getElementById('final-price').textContent = basePrice.toLocaleString();
+        document.getElementById('mileage-info').innerHTML = `<strong>마일리지:</strong> 구매액의 ${productData.mileageRate}% 적립`;
+        
+        // --- 2. 상세 정보 섹션 동적으로 생성 ---
+        const detailsContainer = document.getElementById('product-details-content');
+        const details = productData.details;
+        let detailsHTML = `<p>${details.intro}</p>`;
+        
+        if (details.checkpoints && details.checkpoints.length > 0) {
+            detailsHTML += `<strong>· 디자인 특징</strong><ul>`;
+            details.checkpoints.forEach(point => {
+                detailsHTML += `<li>${point}</li>`;
+            });
+            detailsHTML += `</ul>`;
+        }
+        
+        if (details.care) {
+            detailsHTML += `<strong>· 취급 시 주의사항</strong><p>${details.care.replace(/\n/g, '<br>')}</p>`;
+        }
+        detailsContainer.innerHTML = detailsHTML;
+
+        // --- 3. 수량 및 가격 계산 기능 ---
+        const quantityInput = document.getElementById('quantity-input');
+        const finalPriceSpan = document.getElementById('final-price');
+        const updatePrice = () => {
+            finalPriceSpan.textContent = (parseInt(quantityInput.value) * basePrice).toLocaleString();
+        };
+        document.getElementById('plus-btn').addEventListener('click', () => {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updatePrice();
+        });
+        document.getElementById('minus-btn').addEventListener('click', () => {
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+                updatePrice();
+            }
+        });
+
+        // === [수정됨] 4. 장바구니 담기 기능 ===
+        const cartBtn = document.getElementById('add-to-cart-btn');
+        cartBtn.addEventListener('click', () => {
+            // 4-1. 로그인 상태 확인
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('장바구니에 담으려면 로그인이 필요합니다.');
+                // (참고) 만약 홈페이지에 있던 모달을 띄우고 싶다면,
+                // 그 모달 HTML/CSS/JS를 이 파일에도 가져와야 합니다.
+                // 지금은 간단하게 alert만 띄웁니다.
+                return;
+            }
+
+            // 4-2. 옵션 선택 확인
+            const size = document.getElementById('size-select').value;
+            const color = document.getElementById('color-select').value;
+            const quantity = parseInt(quantityInput.value);
+
+            if (!size || !color) {
+                alert('사이즈와 색상을 선택해주세요.');
+                return;
+            }
+
+            // 4-3. 장바구니에 담을 아이템 객체 생성
+            const cartItem = {
+                cartId: Date.now(), // 장바구니 내에서 고유한 ID로 사용 (삭제 시 필요)
+                id: productData.id,
+                name: productData.name,
+                img: productData.img,
+                price: basePrice, // 할인된 가격
+                size: size,
+                color: color,
+                quantity: quantity
+            };
+
+            // 4-4. localStorage에 저장
+            let cart = getCart();
+            cart.push(cartItem);
+            saveCart(cart);
+
+            // 4-5. 피드백
+            if (confirm('장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?')) {
+                window.location.href = 'cart.html';
+            }
+        });
+    });
+
+    // === [수정됨] 5. 로그인 UI 및 로그아웃 기능 ===
+    function setupLoginUI() {
+        const loggedOutButtons = document.getElementById('loggedOutButtons');
+        const loggedInWelcome = document.getElementById('loggedInWelcome');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const storedName = localStorage.getItem('userName');
+
+        if (isLoggedIn === 'true' && storedName) {
+            loggedOutButtons.style.display = 'none';
+            loggedInWelcome.style.display = 'flex';
+            userNameDisplay.textContent = `${storedName}님`;
+        } else {
+            loggedOutButtons.style.display = 'flex';
+            loggedInWelcome.style.display = 'none';
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userName');
+                alert('로그아웃되었습니다.');
+                window.location.href = '홈페이지.html'; // 홈으로 이동
+            });
+        }
+        
+        // (참고) 이 페이지에는 로그인/회원가입 모달이 없습니다.
+        // '로그인' 버튼을 누르면 로그인 모달이 있는 홈페이지로 이동하게 합니다.
+        document.querySelector('#loggedOutButtons a[href="#"]').addEventListener('click', (e) => {
+             e.preventDefault(); // 기본 # 동작 방지
+             alert('로그인을 위해 홈페이지로 이동합니다.');
+             window.location.href = '홈페이지.html'; // 모달이 있는 페이지
+        });
+    }
+    </script>
+</body>
+</html>
